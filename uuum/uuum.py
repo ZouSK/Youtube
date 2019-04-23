@@ -1,5 +1,6 @@
 import json
 import re
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from copy import deepcopy
 from pathlib import Path
@@ -236,7 +237,27 @@ class Crawler:
         table.insert_many(data)
 
     def save2mysql(self):
-        pass
+        from models import session, Uuum
+
+        uuum_list = []
+        for creator in self.get_uuum():
+            youtube = self.get_youtube(creator)
+
+            u = Uuum(
+                id=creator['id'],
+                category=self.category[creator['category']],
+                order=creator['order'],
+                name=creator['name'],
+                caption=creator['caption'],
+                channel=youtube['channel'],
+                subscriber=youtube['subscriber'],
+                views=youtube['view'],
+                link=creator['link']
+            )
+            uuum_list.append(u)
+        session.add_all(uuum_list)
+        session.commit()
+
 
     @staticmethod
     def clear_cache():
@@ -249,8 +270,7 @@ if __name__ == '__main__':
 
     # 清除缓存
     crawler.clear_cache()
-
     crawler.run()
-
-    crawler.save2excel()
+    # crawler.save2excel()
+    crawler.save2mysql()
     # crawler.save2mongo()

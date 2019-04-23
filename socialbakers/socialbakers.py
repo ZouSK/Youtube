@@ -1,4 +1,5 @@
 import json
+import time
 import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
@@ -148,6 +149,30 @@ class Crawler:
                 ])))
 
         table.insert_many(data)
+    
+    def save2mysql(self):
+
+        from models import Socialbacker, session
+
+        sblist = []
+
+        for page in range(1, 101):
+            cache = Path(f'cache/{page}.json')
+            creators = json.loads(cache.read_text())
+            for creator in creators:
+
+                sb = Socialbacker(
+                    id=self.get_match_link(creator['youtube']),
+                    rank=creator['rank'],
+                    channel=creator['channel'],
+                    subscriber=creator['subscriber'],
+                    views=creator['view'],
+                    video=creator['video'],
+                    link=creator['youtube']
+                )
+                sblist.append(sb)
+        session.add_all(sblist)
+        session.commit()
 
     @staticmethod
     def clear_cache():
@@ -159,9 +184,11 @@ if __name__ == '__main__':
     crawler = Crawler()
 
     # 清除缓存
-    # crawler.clear_cache()
-
+    crawler.clear_cache()
+    print('清除缓存成功')
+    time.sleep(10)
+    print('crawl starting!')
     crawler.run()
-
+    crawler.save2mysql()
     crawler.save2excel()
     # crawler.save2mongo()
