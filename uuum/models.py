@@ -6,6 +6,8 @@ from sqlalchemy.ext.declarative import declarative_base
 
 
 DATABASE_URI = 'mysql+pymysql://root:crush@212.64.26.110:3306/BaiProject'
+# DATABASE_URI = 'mysql+pymysql://root@localhost:3306/youtube'
+
 
 engine = create_engine(DATABASE_URI)
 Base = declarative_base(engine)
@@ -14,7 +16,7 @@ session = sessionmaker(engine)()
 
 class Uuum(Base):
 
-    __tablename__ = 'uuum'
+    __tablename__ = 'uuum_190506'
     
     id = Column(String(64), nullable=False)
     category = Column(String(64), nullable=False)

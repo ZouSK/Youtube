@@ -29,7 +29,7 @@ class Crawler:
             return json.loads(cache.read_text())
 
         req = requests.get(self.url.format(page))
-        print(f'firsturl: {self.url.format(page)}')
+        # print(f'firsturl: {self.url.format(page)}')
         req.encoding = 'utf-8'
 
         pq = PyQuery(req.text)('table tr')
@@ -60,7 +60,7 @@ class Crawler:
                 return creators
 
             req = requests.get(creator['link'])
-            print(f'secondurl:{creator["link"]}')
+            # print(f'secondurl:{creator["link"]}')
             req.encoding = 'utf-8'
 
             pq = PyQuery(req.text)

@@ -7,6 +7,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 
 DATABASE_URI = 'mysql+pymysql://root:crush@212.64.26.110:3306/BaiProject'
+# DATABASE_URI = 'mysql+pymysql://root@localhost:3306/youtube'
 
 
 engine = create_engine(DATABASE_URI)
@@ -16,7 +17,7 @@ session = sessionmaker(engine)()
 
 class Socialbacker(Base):
 
-    __tablename__ = 'socialbackers'
+    __tablename__ = 'socialbackers_190506'
     id = Column(String(64), nullable=False)
     rank = Column(Integer, primary_key=True)
     channel = Column(String(64), nullable=False)

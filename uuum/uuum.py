@@ -271,6 +271,6 @@ if __name__ == '__main__':
     # 清除缓存
     crawler.clear_cache()
     crawler.run()
-    # crawler.save2excel()
-    crawler.save2mysql()
+    crawler.save2excel()
+    # crawler.save2mysql()
     # crawler.save2mongo()
